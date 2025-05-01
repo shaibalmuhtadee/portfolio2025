@@ -41,9 +41,9 @@ const ThemeSwitch = () => {
     return null;
   }
 
-  const buttonStyles = `flex items-center justify-center w-12 h-12 text-3xl transition-transform duration-150 rounded-md hover:ring hover:scale-110 focus:ring`;
-  const lightThemeStyles = `ring-black bg-light_secondary text-dark_primary`;
-  const darkThemeStyles = `ring-light_primary bg-dark_secondary text-light_primary`;
+  const buttonStyles = `flex items-center justify-center text-2xl transition-transform duration-150 rounded-md hover:cursor-pointer`;
+  const lightThemeStyles = `ring-black bg-light_secondary text-dark_primary hover:text-[#8E97A4]`;
+  const darkThemeStyles = `ring-light_primary bg-dark_secondary text-light_primary hover:text-[#F2F230]`;
 
   if (currentTheme === "dark") {
     return (
