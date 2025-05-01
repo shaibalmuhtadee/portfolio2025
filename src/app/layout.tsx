@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Rubik } from "next/font/google";
+import { ThemeProvider } from "next-themes";
 import NavBar from "../components/NavBar";
 
 const rubik = Rubik({
@@ -27,8 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={rubik.variable} suppressHydrationWarning>
       <body>
-        <NavBar />
-        {children}
+        <ThemeProvider attribute="class">
+          <NavBar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
