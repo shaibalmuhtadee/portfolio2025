@@ -29,6 +29,7 @@ export default function RootLayout({
     <html lang="en" className={rubik.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class">
+          <div id="grain-overlay"></div>
           <NavBar />
           {children}
         </ThemeProvider>

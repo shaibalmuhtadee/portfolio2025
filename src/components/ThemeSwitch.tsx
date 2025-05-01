@@ -2,32 +2,68 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
-import { get } from "http";
+import { BsMoonFill, BsSunFill } from "react-icons/bs";
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
-  // useEffect only runs on the client, so now we can safely show the UI
+  // Ensure the component is mounted before rendering
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Apply theme-specific styles when the theme changes
+  useEffect(() => {
+    if (currentTheme === "dark") {
+      document.documentElement.style.setProperty(
+        "--underline-color",
+        "#F2F7F2"
+      );
+      document.documentElement.style.setProperty(
+        "--underline-color-highlight",
+        "#F2F230"
+      );
+    } else {
+      document.documentElement.style.setProperty(
+        "--underline-color",
+        "#001429"
+      );
+      document.documentElement.style.setProperty(
+        "--underline-color-highlight",
+        "#3185FC"
+      );
+    }
+  }, [currentTheme]);
 
   if (!mounted) {
     return null;
   }
 
-  return (
-    <select
-      value={theme || "system"}
-      onChange={(e) => setTheme(e.target.value)}
-      className="p-2 border rounded"
-    >
-      <option value="system">System</option>
-      <option value="dark">Dark</option>
-      <option value="light">Light</option>
-    </select>
-  );
+  const buttonStyles = `flex items-center justify-center w-12 h-12 text-3xl transition-transform duration-150 rounded-md hover:ring hover:scale-110 focus:ring`;
+  const lightThemeStyles = `ring-black bg-light_secondary text-dark_primary`;
+  const darkThemeStyles = `ring-light_primary bg-dark_secondary text-light_primary`;
+
+  if (currentTheme === "dark") {
+    return (
+      <button
+        className={`${buttonStyles} ${darkThemeStyles}`}
+        onClick={() => setTheme("light")}
+      >
+        <BsSunFill />
+      </button>
+    );
+  } else {
+    return (
+      <button
+        className={`${buttonStyles} ${lightThemeStyles}`}
+        onClick={() => setTheme("dark")}
+      >
+        <BsMoonFill />
+      </button>
+    );
+  }
 };
 
 export default ThemeSwitch;
