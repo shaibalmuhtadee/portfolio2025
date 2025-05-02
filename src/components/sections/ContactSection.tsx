@@ -18,6 +18,12 @@ export default function ContactSection() {
       : "#3185FC"
     : "#374151";
 
+  const footerColor = mounted
+    ? theme === "dark"
+      ? "text-gray-400"
+      : "text-black"
+    : "text-gray-400";
+
   return (
     <section
       id="contact"
@@ -77,7 +83,7 @@ export default function ContactSection() {
         </div>
       </div>
       <div className="w-full mb-5 flex justify-center">
-        <span className="text-sm text-center text-gray-400">
+        <span className={`text-sm text-center ${footerColor}`}>
           Crafted & Designed by Shaibal Muhtadee © 2025
         </span>
       </div>
