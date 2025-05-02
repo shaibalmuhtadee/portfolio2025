@@ -4,6 +4,7 @@ import { Roboto } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import NavBar from "../components/NavBar";
 import ScrollBar from "../components/ScrollBar";
+import EmailSidebar from "../components/EmailSidebar";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -34,6 +35,7 @@ export default function RootLayout({
           <div id="grain-overlay"></div>
           <NavBar />
           <ScrollBar />
+          <EmailSidebar />
           {children}
         </ThemeProvider>
       </body>
