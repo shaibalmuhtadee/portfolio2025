@@ -5,14 +5,16 @@ import ProjectsSection from "@/components/sections/ProjectsSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 import SkillsSection from "@/components/sections/SkillsSection";
 import ContactSection from "@/components/sections/ContactSection";
+import AboutSection from "@/components/sections/About";
 import Footer from "@/components/Footer";
 
 export default function HomePage() {
   return (
     <div className="scroll-smooth">
       <IntroSection />
-      <ProjectsSection />
+      <AboutSection />
       <ExperienceSection />
+      <ProjectsSection />
       <SkillsSection />
       <ContactSection />
       <Footer />

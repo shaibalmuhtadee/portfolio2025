@@ -111,7 +111,7 @@ const NavBar = () => {
             },
           }}
         >
-          <Link href="/#intro" className={`${linkStyles.base} ${textColor}`}>
+          <Link href="/#about" className={`${linkStyles.base} ${textColor}`}>
             About
             <span className={linkStyles.underline}></span>
           </Link>
