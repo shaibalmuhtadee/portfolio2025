@@ -132,7 +132,9 @@ const NavBar = () => {
           </Link>
           <span aria-hidden="true"></span>
         </StyleBreadcrumbs>
-        <ThemeSwitch />
+        <div className="pr-1">
+          <ThemeSwitch />
+        </div>
       </div>
     </nav>
   );
