@@ -2,7 +2,7 @@
 
 import ThemeSwitch from "@/components/ThemeSwitch";
 
-export default function IntroPage() {
+export default function IntroSection() {
   return (
     <section
       id="intro"

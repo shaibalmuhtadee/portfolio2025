@@ -14,22 +14,25 @@ const NavBar = () => {
       </div>
 
       <div className="flex items-center gap-6">
-        <Link href="/intro" className="hover:text-blue-500 transition-colors">
+        <Link href="/#intro" className="hover:text-blue-500 transition-colors">
           About
         </Link>
         <Link
-          href="/experience"
+          href="/#experience"
           className="hover:text-blue-500 transition-colors"
         >
           Experience
         </Link>
         <Link
-          href="/projects"
+          href="/#projects"
           className="hover:text-blue-500 transition-colors"
         >
           Projects
         </Link>
-        <Link href="/contact" className="hover:text-blue-500 transition-colors">
+        <Link
+          href="/#contact"
+          className="hover:text-blue-500 transition-colors"
+        >
           Contact
         </Link>
         <ThemeSwitch />
