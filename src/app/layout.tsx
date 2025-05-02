@@ -1,12 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Rubik } from "next/font/google";
+import { Roboto } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import NavBar from "../components/NavBar";
 
-const rubik = Rubik({
-  variable: "--font-rubik",
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
   subsets: ["latin"],
+  variable: "--font-roboto",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={rubik.variable} suppressHydrationWarning>
+    <html lang="en" className={roboto.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class">
           <div id="grain-overlay"></div>

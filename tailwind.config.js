@@ -16,7 +16,7 @@ module.exports = {
         light_highlight: "#3185FC",
       },
       fontFamily: {
-        Rubik: ["Rubik", "sans-serif"],
+        Rubik: ["Roboto", "sans-serif"],
       },
     },
   },
