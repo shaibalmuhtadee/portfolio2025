@@ -97,10 +97,9 @@ const NavBar = () => {
     <nav className="fixed top-4 left-0 right-0">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          id="navbar"
           className={`flex items-center justify-between py-1 border-[${navBorderColor}] border-1 rounded-lg bg-light-primary/80 dark:bg-dark-primary/80 backdrop-blur-xs max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl mx-auto`}
         >
-          <div className="flex items-center gap-1">
+          <div id="navbar_left" className="flex items-center gap-1">
             <div className="flex items-center pl-2">
               <Image
                 src="/favicon/favicon.svg"
@@ -157,7 +156,7 @@ const NavBar = () => {
               ))}
               <span aria-hidden="true"></span>
             </StyleBreadcrumbs>
-            <div className="pr-2">
+            <div id="navbar_right" className="pr-2">
               <ThemeSwitch />
             </div>
           </div>
