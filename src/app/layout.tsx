@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import NavBar from "../components/NavBar";
 import ScrollBar from "../components/ScrollBar";
 import EmailSidebar from "../components/EmailSidebar";
+import SmoothScroll from "@/components/SmoothScroll";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -38,7 +39,7 @@ export default function RootLayout({
           <div className="hidden lg:block">
             <EmailSidebar />
           </div>
-          {children}
+          <SmoothScroll>{children}</SmoothScroll>
         </ThemeProvider>
       </body>
     </html>

@@ -31,6 +31,7 @@ import {
 import { FaDatabase } from "react-icons/fa";
 import { BiLogoPostgresql } from "react-icons/bi";
 import { TbBrandFramerMotion } from "react-icons/tb";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 
 export default function SkillsSection() {
   const { theme } = useTheme();
@@ -104,79 +105,183 @@ export default function SkillsSection() {
     },
   ];
 
-  const renderSkillItems = (content: string) => {
-    return content.split(", ").map((skill) => {
-      const Icon = iconMap[skill as keyof typeof iconMap];
-      const iconColors = {
-        Python: "#3776AB", // Python blue
-        JavaScript: "#F7DF1E", // JavaScript yellow
-        TypeScript: "#3178C6", // TypeScript blue
-        "C/C++": "#00599C", // C++ blue
-        "HTML/CSS": "#E34F26", // HTML orange
-        Dart: "#0175C2", // Dart blue
-        SQL: "#4479A1", // SQL blue
-        React: "#61DAFB", // React cyan
-        "Next.js": theme === "dark" ? "#FFFFFF" : "#000000", // Next.js white/black
-        "Node.js": "#339933", // Node.js green
-        Express: theme === "dark" ? "#FFFFFF" : "#000000", // Express white/black
-        Django: theme === "dark" ? "#44B78B" : "#092E20", // Django light green/dark green
-        "Tailwind CSS": "#06B6D4", // Tailwind cyan
-        Motion: "#7B61FF", // Framer Motion purple
-        Flutter: "#02569B", // Flutter blue
-        PostgreSQL: "#336791", // PostgreSQL blue
-        SQLite: "#003B57", // SQLite blue
-        MongoDB: "#47A248", // MongoDB green
-        Prisma: theme === "dark" ? "#FFFFFF" : "#2D3748", // Prisma white/dark gray
-        Git: "#F05032", // Git orange
-        Docker: "#2496ED", // Docker blue
-        AWS: "#FF9900", // AWS orange
-        "Google Cloud": "#4285F4", // Google Cloud blue
-        DevTools: theme === "dark" ? "#FFFFFF" : "#000000", // Chrome DevTools white/black
-        Figma: "#F24E1E", // Figma orange
-      };
+  // Fixed color mapping that doesn't change during hydration
+  const getIconColor = (skill: string) => {
+    // Colors that don't change with theme
+    const staticColors: Record<string, string> = {
+      Python: "#3776AB",
+      JavaScript: "#F7DF1E",
+      TypeScript: "#3178C6",
+      "C/C++": "#00599C",
+      "HTML/CSS": "#E34F26",
+      Dart: "#0175C2",
+      SQL: "#4479A1",
+      React: "#61DAFB",
+      "Node.js": "#339933",
+      "Tailwind CSS": "#06B6D4",
+      Motion: "#7B61FF",
+      Flutter: "#02569B",
+      PostgreSQL: "#336791",
+      SQLite: "#003B57",
+      MongoDB: "#47A248",
+      Git: "#F05032",
+      Docker: "#2496ED",
+      AWS: "#FF9900",
+      "Google Cloud": "#4285F4",
+      Figma: "#F24E1E",
+    };
 
-      return (
-        <div key={skill} className="flex items-center gap-4 min-w-[200px]">
-          {Icon && (
-            <Icon
-              className="text-4xl min-w-[40px]"
-              style={{ color: iconColors[skill as keyof typeof iconColors] }}
-            />
-          )}
-          <span className="text-xl whitespace-nowrap">{skill}</span>
-        </div>
-      );
+    // If it's a static color, return it directly
+    if (skill in staticColors) {
+      return staticColors[skill];
+    }
+
+    // Only show theme-dependent colors after component is mounted
+    if (!mounted) {
+      return "currentColor"; // Use default color during server-side rendering
+    }
+
+    // Theme-dependent colors
+    if (skill === "Next.js" || skill === "Express" || skill === "DevTools") {
+      return theme === "dark" ? "#FFFFFF" : "#000000";
+    }
+    if (skill === "Django") {
+      return theme === "dark" ? "#44B78B" : "#092E20";
+    }
+    if (skill === "Prisma") {
+      return theme === "dark" ? "#FFFFFF" : "#2D3748";
+    }
+
+    return "currentColor"; // Fallback
+  };
+
+  const SkillItem = ({
+    skill,
+    index,
+    categoryInView,
+  }: {
+    skill: string;
+    index: number;
+    categoryInView: boolean;
+  }) => {
+    const Icon = iconMap[skill as keyof typeof iconMap];
+    const ref = React.useRef(null);
+    const isInView = useInView(ref, {
+      margin: "-25% 0px -25% 0px",
+      once: false,
     });
+
+    // Only animate individual items when their parent category is in view
+    const shouldAnimate = categoryInView && isInView;
+
+    return (
+      <motion.div
+        ref={ref}
+        key={skill}
+        className="flex items-center gap-4 min-w-[200px]"
+        initial={{ opacity: 0, y: 20 }}
+        animate={
+          shouldAnimate
+            ? {
+                opacity: 1,
+                y: 0,
+                transition: {
+                  duration: 0.5,
+                  delay: index * 0.1,
+                  ease: "easeOut",
+                },
+              }
+            : {
+                opacity: 0,
+                y: 50,
+                transition: {
+                  duration: 0.3,
+                  delay: index * 0.05,
+                  ease: "easeIn",
+                },
+              }
+        }
+      >
+        {Icon && (
+          <Icon
+            className="text-4xl min-w-[40px]"
+            style={{ color: getIconColor(skill) }}
+          />
+        )}
+        <span className="text-2xl whitespace-nowrap">{skill}</span>
+      </motion.div>
+    );
+  };
+
+  const renderSkillItems = (content: string, categoryInView: boolean) => {
+    return content
+      .split(", ")
+      .map((skill, index) => (
+        <SkillItem
+          key={skill}
+          skill={skill}
+          index={index}
+          categoryInView={categoryInView}
+        />
+      ));
+  };
+
+  const SkillCategory = ({ skill, index }: { skill: any; index: number }) => {
+    const ref = React.useRef(null);
+    const isInView = useInView(ref, {
+      margin: "-15% 0px -15% 0px",
+      once: false,
+    });
+
+    return (
+      <motion.div
+        ref={ref}
+        key={skill.label}
+        className="flex flex-col lg:flex-row gap-12 mb-18"
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.7, delay: index * 0.2 }}
+      >
+        <motion.div
+          className="lg:w-5/12"
+          initial={{ opacity: 0, x: -50 }}
+          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+          transition={{ duration: 0.4, delay: index * 0.2 }}
+        >
+          <Typography
+            variant="h3"
+            className="text-gray-400"
+            sx={typographyStyles}
+          >
+            {skill.label}
+          </Typography>
+        </motion.div>
+        <div className="lg:w-9/12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-8">
+            {renderSkillItems(skill.content, isInView)}
+          </div>
+        </div>
+      </motion.div>
+    );
   };
 
   return (
     <section id="skills" className="min-h-screen">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl">
-        <h1 className={`text-4xl font-bold mb-12 text-[${highlightColor}]`}>
+        <motion.h1
+          className="text-4xl font-bold mb-12"
+          style={{ color: highlightColor }}
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-20% 0px" }}
+          transition={{ duration: 0.6 }}
+        >
           Skills
-        </h1>
+        </motion.h1>
 
         <div className="ml-4">
-          {skills.map((skill) => (
-            <div
-              key={skill.label}
-              className="flex flex-col lg:flex-row gap-12 mb-18"
-            >
-              <div className="lg:w-5/12">
-                <Typography
-                  variant="h2"
-                  className="text-gray-400"
-                  sx={typographyStyles}
-                >
-                  {skill.label}
-                </Typography>
-              </div>
-              <div className="lg:w-7/12">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-8">
-                  {renderSkillItems(skill.content)}
-                </div>
-              </div>
-            </div>
+          {skills.map((skill, index) => (
+            <SkillCategory key={skill.label} skill={skill} index={index} />
           ))}
         </div>
       </div>
