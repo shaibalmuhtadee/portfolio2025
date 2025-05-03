@@ -31,7 +31,7 @@ import {
 import { FaDatabase } from "react-icons/fa";
 import { BiLogoPostgresql } from "react-icons/bi";
 import { TbBrandFramerMotion } from "react-icons/tb";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 export default function SkillsSection() {
   const { theme } = useTheme();
@@ -267,9 +267,9 @@ export default function SkillsSection() {
 
   return (
     <section id="skills" className="min-h-screen">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl mt-16">
         <motion.h1
-          className="text-4xl font-bold mb-12"
+          className="text-4xl font-bold mb-6"
           style={{ color: highlightColor }}
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
