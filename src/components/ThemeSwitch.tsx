@@ -18,7 +18,7 @@ const ThemeSwitch = () => {
     return null;
   }
 
-  const buttonStyles = `flex items-center justify-center text-2xl transition-transform duration-150 rounded-md hover:cursor-pointer`;
+  const buttonStyles = `flex items-center justify-center text-2xl transition-transform duration-150 rounded-md hover:cursor-pointer hover:drop-shadow-xs`;
   const lightThemeStyles = `ring-black bg-light_secondary text-dark_primary hover:text-[#3185FC]`;
   const darkThemeStyles = `ring-light_primary bg-dark_secondary text-light_primary hover:text-[#F2F230]`;
 
