@@ -266,14 +266,14 @@ export default function SkillsSection() {
   };
 
   return (
-    <section id="skills" className="min-h-screen">
+    <section id="skills" className="min-h-screen flex flex-col justify-between">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl mt-16">
         <motion.h1
           className="text-4xl font-bold mb-6"
           style={{ color: highlightColor }}
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, margin: "-20% 0px" }}
+          viewport={{ once: false, margin: "-15% 0px" }}
           transition={{ duration: 0.6 }}
         >
           Skills
