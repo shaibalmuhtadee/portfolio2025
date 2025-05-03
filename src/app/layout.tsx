@@ -35,7 +35,9 @@ export default function RootLayout({
           <div id="grain-overlay"></div>
           <NavBar />
           <ScrollBar />
-          <EmailSidebar />
+          <div className="hidden lg:block">
+            <EmailSidebar />
+          </div>
           {children}
         </ThemeProvider>
       </body>

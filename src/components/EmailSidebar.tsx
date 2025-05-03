@@ -19,20 +19,30 @@ const EmailSidebar = () => {
     : "#374151";
 
   return (
-    <>
-      <Divider
-        className="fixed top-[38.6svh] left-[15.65%] -translate-y-1/2"
-        orientation="horizontal"
-        flexItem
-        sx={{
-          backgroundColor: dividerColor,
-          height: "1px",
-          width: "32px",
-          transformOrigin: "center",
-          transform: "rotate(-90deg)",
-        }}
-      />
-      <div className="fixed top-[63svh] left-[16.5%] -translate-y-1/2 flex flex-col items-center gap-1">
+    <div
+      className="fixed"
+      style={{ left: "16vw", top: "63vh", transform: "translateY(-50%)" }}
+    >
+      <div className="relative flex items-center">
+        {/* Top Divider */}
+        <Divider
+          className="absolute"
+          style={{
+            left: "-15px",
+            top: "-220px",
+            transform: "rotate(-90deg)",
+          }}
+          orientation="horizontal"
+          flexItem
+          sx={{
+            backgroundColor: dividerColor,
+            height: "1px",
+            width: "32px",
+            transformOrigin: "center",
+          }}
+        />
+
+        {/* Email */}
         <p
           className={`${
             mounted
@@ -44,20 +54,26 @@ const EmailSidebar = () => {
         >
           shaibalmuhtadee@gmail.com
         </p>
+
+        {/* Bottom Divider */}
+        <Divider
+          className="absolute"
+          style={{
+            left: "-15px",
+            bottom: "-16px",
+            transform: "rotate(-90deg)",
+          }}
+          orientation="horizontal"
+          flexItem
+          sx={{
+            backgroundColor: dividerColor,
+            height: "1px",
+            width: "32px",
+            transformOrigin: "center",
+          }}
+        />
       </div>
-      <Divider
-        className="fixed top-[65.8svh] left-[15.65%] -translate-y-1/2"
-        orientation="horizontal"
-        flexItem
-        sx={{
-          backgroundColor: dividerColor,
-          height: "1px",
-          width: "32px",
-          transformOrigin: "center",
-          transform: "rotate(-90deg)",
-        }}
-      />
-    </>
+    </div>
   );
 };
 
