@@ -8,6 +8,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import GlassBackground from "@/components/GlassBackground";
 import Link from "next/link";
 import { Project } from "@/data/projects";
+import { LiaExternalLinkAltSolid } from "react-icons/lia";
 
 type ProjectPageClientProps = {
   project: Project;
@@ -26,6 +27,12 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
     ? resolvedTheme === "dark"
       ? "#F2F230"
       : "#3185FC"
+    : "#374151";
+
+  const textColor = mounted
+    ? resolvedTheme === "dark"
+      ? "#D1D5DB"
+      : "#374151"
     : "#374151";
 
   // Loading state when not mounted
@@ -78,23 +85,46 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
             {/* Project image */}
-            <div className="bg-gray-800/30 rounded-lg aspect-video flex items-center justify-center">
+            <div className="relative cursor-pointer border bg-gray-800/30 rounded-lg aspect-video flex items-center justify-center group overflow-hidden">
               {project.image ? (
-                <img
-                  src={project.image}
-                  alt={project.name}
-                  className="w-full h-full object-cover rounded-lg"
-                />
+                <>
+                  <img
+                    src={project.image}
+                    alt={project.name}
+                    className="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <a
+                    href={project.image}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute top-3 right-3 text-white bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  >
+                    <LiaExternalLinkAltSolid size={20} />
+                  </a>
+                </>
               ) : (
                 <div className="text-gray-500">Project Image</div>
               )}
             </div>
 
             {/* Project details */}
-            <div className="space-y-4">
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-xl font-semibold mb-2">Year</h2>
+                <p
+                  className="text-gray-300"
+                  style={{ color: "var(--text-color)" }}
+                >
+                  {project.year}
+                </p>
+              </div>
+
               <div>
                 <h2 className="text-xl font-semibold mb-2">Project Overview</h2>
-                <p className="text-gray-300">
+                <p
+                  className="text-gray-300"
+                  style={{ color: "var(--text-color)" }}
+                >
                   {project.description ||
                     "This is a showcase of the " + project.name + " project."}
                 </p>
@@ -102,7 +132,10 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
 
               <div>
                 <h2 className="text-xl font-semibold mb-2">Key Features</h2>
-                <ul className="list-disc list-inside space-y-1 text-gray-300">
+                <ul
+                  className="list-disc list-inside space-y-1 text-gray-300"
+                  style={{ color: "var(--text-color)" }}
+                >
                   {project.features?.map((feature, idx) => (
                     <li key={idx}>{feature}</li>
                   )) || (
@@ -113,21 +146,6 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
                     </>
                   )}
                 </ul>
-              </div>
-
-              <div className="pt-4">
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-md transition-all duration-300"
-                  style={{
-                    backgroundColor: highlightColor,
-                    color: resolvedTheme === "dark" ? "#111" : "#fff",
-                  }}
-                >
-                  View GitHub Repository
-                </a>
               </div>
             </div>
           </div>
