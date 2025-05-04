@@ -2,12 +2,12 @@
 
 import { useTheme } from "next-themes";
 import ThemeSwitch from "./ThemeSwitch";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import StyleBreadcrumbs from "@mui/material/Breadcrumbs";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { FiMenu } from "react-icons/fi";
+import { usePathname } from "next/navigation";
 
 const NavBar = () => {
   const { theme } = useTheme();
@@ -15,6 +15,7 @@ const NavBar = () => {
   const [currentSection, setCurrentSection] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const sections = useRef<{ [key: string]: IntersectionObserverEntry }>({});
+  const pathname = usePathname();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -28,71 +29,98 @@ const NavBar = () => {
     setMounted(true);
   }, []);
 
+  // Update current section when pathname changes
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          sections.current[entry.target.id] = entry;
-        });
+    // If we're on a project page, set the section to "projects"
+    if (pathname?.startsWith("/projects/")) {
+      setCurrentSection("projects");
+      return;
+    }
 
-        // Get scroll position
-        const scrollY = window.scrollY;
+    // Otherwise, reset the section if we're not on the homepage
+    if (pathname !== "/") {
+      setCurrentSection("");
+      return;
+    }
+  }, [pathname]);
 
-        // Give intro section special priority at the top of the page
-        // Significantly increased the scroll threshold to 400px
-        if (scrollY < 400) {
-          setCurrentSection("intro");
+  useEffect(() => {
+    // Skip intersection observer setup if not on homepage
+    if (pathname !== "/") {
+      return;
+    }
+
+    const observedSections = new Map<string, IntersectionObserverEntry>();
+
+    const handleIntersections = (entries: IntersectionObserverEntry[]) => {
+      // Your existing intersection observer code
+      for (const entry of entries) {
+        observedSections.set(entry.target.id, entry);
+      }
+
+      // Special case: if projects section is intersecting at all, prioritize it
+      const projectsEntry = observedSections.get("projects");
+      if (projectsEntry?.isIntersecting) {
+        setCurrentSection("projects");
+        return;
+      }
+
+      // Fallback: check viewport center is within the projects section
+      const projEl = document.getElementById("projects");
+      if (projEl) {
+        const rect = projEl.getBoundingClientRect();
+        const mid = window.innerHeight / 2;
+        if (rect.top <= mid && rect.bottom >= mid) {
+          setCurrentSection("projects");
           return;
         }
-
-        // Find the most visible section
-        let mostVisibleSection = "";
-        let highestRatio = 0;
-
-        Object.entries(sections.current).forEach(([id, entry]) => {
-          // Skip the about section if we're still near the top of the page
-          if (id === "about" && scrollY < 600) {
-            return;
-          }
-
-          if (entry.isIntersecting && entry.intersectionRatio > highestRatio) {
-            highestRatio = entry.intersectionRatio;
-            mostVisibleSection = id;
-          }
-        });
-
-        // Default to intro if no clear section is visible and we're near the top
-        if (
-          scrollY < 500 &&
-          (highestRatio < 0.3 || mostVisibleSection === "")
-        ) {
-          mostVisibleSection = "intro";
-        }
-
-        console.log(
-          "Most visible section:",
-          mostVisibleSection,
-          "Ratio:",
-          highestRatio,
-          "ScrollY:",
-          scrollY
-        );
-
-        setCurrentSection(mostVisibleSection);
-      },
-      {
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-        // Use a more aggressive root margin to improve detection
-        rootMargin: "-10% 0px -10% 0px",
       }
-    );
 
-    // Observe all sections
-    const sectionElements = document.querySelectorAll("section[id]");
-    sectionElements.forEach((section) => observer.observe(section));
+      const scrollY = window.scrollY;
+
+      // Priority for intro if near the top
+      if (scrollY < 400) {
+        setCurrentSection("intro");
+        return;
+      }
+
+      let mostVisibleSection = "";
+      let highestRatio = 0;
+
+      observedSections.forEach((entry, id) => {
+        // Skip 'about' section if still near top
+        if (id === "about" && scrollY < 600) return;
+
+        if (entry.isIntersecting && entry.intersectionRatio > highestRatio) {
+          highestRatio = entry.intersectionRatio;
+          mostVisibleSection = id;
+        }
+      });
+
+      // Fallback to 'intro' if no section dominates near top
+      if (scrollY < 500 && (highestRatio < 0.3 || mostVisibleSection === "")) {
+        mostVisibleSection = "intro";
+      }
+
+      console.debug(
+        `Most visible: ${mostVisibleSection}, Ratio: ${highestRatio.toFixed(
+          2
+        )}, ScrollY: ${scrollY}, Path: ${pathname}`
+      );
+
+      setCurrentSection(mostVisibleSection);
+    };
+
+    const observer = new IntersectionObserver(handleIntersections, {
+      threshold: Array.from({ length: 11 }, (_, i) => i / 10), // [0, 0.1, ..., 1]
+      rootMargin: "-10% 0px -10% 0px",
+    });
+
+    const sections = document.querySelectorAll<HTMLElement>("section[id]");
+    sections.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
-  }, []);
+  }, [pathname]); // Re-create observer if pathname changes
 
   const textColor = mounted
     ? theme === "dark"

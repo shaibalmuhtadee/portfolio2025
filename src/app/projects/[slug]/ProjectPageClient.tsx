@@ -131,19 +131,6 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
               </div>
             </div>
           </div>
-
-          {/* Additional project content */}
-          <div className="mb-16">
-            <h2 className="text-2xl font-semibold mb-4">
-              Implementation Details
-            </h2>
-            <p className="text-gray-300 mb-4">
-              {project.details ||
-                "This project was implemented using various technologies and approaches to solve specific challenges."}
-            </p>
-
-            {project.additionalContent}
-          </div>
         </motion.div>
       </div>
     </section>

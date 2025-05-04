@@ -23,10 +23,7 @@ export const projectsData: Project[] = [
       "Dark mode and light mode themes",
       "Smooth animations and transitions",
       "Performance optimized with Next.js",
-    ],
-    details:
-      "This portfolio website was built using Next.js 14 with the App Router, TailwindCSS for styling, and Framer Motion for animations. The site features a clean, minimalist design with a focus on performance and accessibility.",
-  },
+    ],},
   {
     name: "GanttWise - Capstone Project",
     slug: "ganttwise",
