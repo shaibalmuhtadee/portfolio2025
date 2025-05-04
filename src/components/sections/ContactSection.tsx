@@ -28,10 +28,10 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="min-h-screen flex flex-col justify- relative overflow-hidden"
+      className="min-h-screen flex flex-col justify-center relative overflow-hidden"
     >
       <GlassBackground color={highlightColor} />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl flex-1 flex flex-col justify-center mt-16">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl flex-1 flex flex-col justify-center">
         <div className="flex flex-col items-center justify-center">
           <h1
             id="contact_bottom"
