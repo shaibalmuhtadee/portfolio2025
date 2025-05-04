@@ -21,6 +21,12 @@ export default function ProjectsSection() {
       : "#3185FC"
     : "#374151";
 
+  const baseColor = mounted
+    ? resolvedTheme === "dark"
+      ? "#FFFFFF"
+      : "#000000"
+    : "#374151";
+
   const projects = [
     {
       name: "Personal Portfolio Website",
@@ -99,13 +105,17 @@ export default function ProjectsSection() {
                 className="group flex flex-col cursor-pointer"
               >
                 <div className="flex items-center">
-                  <h2 className="text-4xl sm:text-5xl font-bold mb-2 relative overflow-visible">
+                  <h2
+                    className="text-4xl sm:text-5xl font-bold mb-2 bg-[length:200%_100%] 
+                        bg-[position:0_0] bg-clip-text text-transparent transition-[background-position] 
+                        duration-700 ease-in-out group-hover:bg-[position:-100%_0] pb-[0.15em]"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, ${baseColor} 50%, ${highlightColor} 50%)`,
+                    }}
+                  >
                     {project.name}
-                    <span
-                      className="absolute bottom-[-5] left-0 w-0 h-[3px] group-hover:w-full transition-all duration-700 ease-in-out"
-                      style={{ backgroundColor: highlightColor }}
-                    />
                   </h2>
+
                   <span className="ml-4 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out">
                     <LiaExternalLinkAltSolid
                       className="w-12 h-12"
