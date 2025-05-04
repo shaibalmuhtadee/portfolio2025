@@ -5,6 +5,8 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import GlassBackground from "@/components/GlassBackground";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
+import Link from "next/link";
+import { projectsData } from "@/data/projects";
 
 export default function ProjectsSection() {
   const { theme, resolvedTheme } = useTheme();
@@ -26,34 +28,6 @@ export default function ProjectsSection() {
       ? "#FFFFFF"
       : "#000000"
     : "#374151";
-
-  const projects = [
-    {
-      name: "Personal Portfolio Website",
-      tech: ["Next.js", "TailwindCSS", "Framer Motion"],
-      url: "https://github.com/yourusername/portfolio",
-    },
-    {
-      name: "GanttWise - Capstone Project",
-      tech: ["React", "TensorFlow", "Django"],
-      url: "https://github.com/yourusername/robot-navigation",
-    },
-    {
-      name: "Searchington - Web Search Engine",
-      tech: ["Python", "Redis", "AWS"],
-      url: "https://github.com/yourusername/nn-compiler",
-    },
-    {
-      name: "LibCG - Computer Graphics Library",
-      tech: ["C", "C++", "Visual Studio"],
-      url: "https://github.com/yourusername/realtime-chat",
-    },
-    {
-      name: "ChromaMap - GIS Map Application",
-      tech: ["C", "C++", "OpenMaps API"],
-      url: "https://github.com/yourusername/blockchain-analyzer",
-    },
-  ];
 
   // Return a loading state until mounted is true
   if (!mounted) {
@@ -85,7 +59,7 @@ export default function ProjectsSection() {
           viewport={{ once: false, margin: "-5% 0px" }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          {projects.map((project, index) => (
+          {projectsData.map((project, index) => (
             <motion.li
               key={index}
               initial={{ y: 20, opacity: 0 }}
@@ -93,36 +67,35 @@ export default function ProjectsSection() {
               viewport={{ once: false, margin: "-5% 0px" }}
               transition={{ duration: 0.5, delay: 0.1 * index }}
               className={`${
-                index !== projects.length - 1
+                index !== projectsData.length - 1
                   ? "border-b border-gray-700 mt-2"
                   : ""
               } pb-4`}
             >
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex flex-col cursor-pointer"
-              >
+              <div className="flex flex-col">
                 <div className="flex items-center">
-                  <h2
-                    className="text-4xl sm:text-5xl font-bold mb-2 bg-[length:200%_100%] 
-                        bg-[position:0_0] bg-clip-text text-transparent transition-[background-position] 
-                        duration-700 ease-in-out group-hover:bg-[position:-100%_0] pb-[0.15em]"
-                    style={{
-                      backgroundImage: `linear-gradient(to right, ${baseColor} 50%, ${highlightColor} 50%)`,
-                    }}
-                  >
-                    {project.name}
-                  </h2>
+                  <Link href={`/projects/${project.slug}`} className="group">
+                    <div className="flex items-center">
+                      <h2
+                        className="text-4xl sm:text-5xl font-bold mb-2 bg-[length:200%_100%] 
+                            bg-[position:0_0] bg-clip-text text-transparent transition-[background-position] 
+                            duration-700 ease-in-out group-hover:bg-[position:-100%_0] pb-[0.15em] pt-[0.05em]"
+                        style={{
+                          backgroundImage: `linear-gradient(to right, ${baseColor} 50%, ${highlightColor} 50%)`,
+                        }}
+                      >
+                        {project.name}
+                      </h2>
 
-                  <span className="ml-4 mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-700 ease-in-out">
-                    <LiaExternalLinkAltSolid
-                      className="w-12 h-12"
-                      style={{ color: highlightColor }}
-                      key={highlightColor}
-                    />
-                  </span>
+                      <div className="ml-4 mb-4 opacity-0 transform translate-x-[-10px] group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 delay-150">
+                        <LiaExternalLinkAltSolid
+                          className="w-12 h-12"
+                          key={highlightColor}
+                          style={{ color: highlightColor }}
+                        />
+                      </div>
+                    </div>
+                  </Link>
                 </div>
                 <div className="flex gap-4 mb-2">
                   {project.tech.map((tech, techIndex) => (
@@ -131,7 +104,7 @@ export default function ProjectsSection() {
                     </span>
                   ))}
                 </div>
-              </a>
+              </div>
             </motion.li>
           ))}
         </motion.ul>
