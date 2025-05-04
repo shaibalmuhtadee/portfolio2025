@@ -16,6 +16,42 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "Shaibal Muhtadee | Portfolio",
   description: "Portfolio of Shaibal Muhtadee",
+  keywords: [
+    "Shaibal Muhtadee",
+    "software engineer",
+    "full-stack developer",
+    "web developer",
+    "Next.js portfolio",
+    "React developer",
+    "frontend engineer",
+    "backend developer",
+    "personal website",
+    "JavaScript developer",
+  ],
+  authors: [{ name: "Shaibal Muhtadee", url: "https://shaibalmuhtadee.com" }],
+  creator: "Shaibal Muhtadee",
+  publisher: "Shaibal Muhtadee",
+  openGraph: {
+    title: "Shaibal Muhtadee | Portfolio",
+    description: "Explore the professional portfolio of Shaibal Muhtadee",
+    url: "https://shaibalmuhtadee.com",
+    siteName: "Shaibal Muhtadee | Portfolio",
+    images: [
+      {
+        url: "https://shaibalmuhtadee.com/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Shaibal Muhtadee Portfolio Screenshot",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  metadataBase: new URL("https://shaibalmuhtadee.com"),
+  alternates: {
+    canonical: "https://shaibalmuhtadee.com",
+  },
+  themeColor: "#ffffff",
   icons: {
     icon: [
       { rel: "icon", type: "image/svg+xml", url: "/favicon/favicon.svg" },
