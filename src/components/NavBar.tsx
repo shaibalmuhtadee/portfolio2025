@@ -35,21 +35,55 @@ const NavBar = () => {
           sections.current[entry.target.id] = entry;
         });
 
+        // Get scroll position
+        const scrollY = window.scrollY;
+
+        // Give intro section special priority at the top of the page
+        // Significantly increased the scroll threshold to 400px
+        if (scrollY < 400) {
+          setCurrentSection("intro");
+          return;
+        }
+
         // Find the most visible section
         let mostVisibleSection = "";
         let highestRatio = 0;
 
         Object.entries(sections.current).forEach(([id, entry]) => {
+          // Skip the about section if we're still near the top of the page
+          if (id === "about" && scrollY < 600) {
+            return;
+          }
+
           if (entry.isIntersecting && entry.intersectionRatio > highestRatio) {
             highestRatio = entry.intersectionRatio;
             mostVisibleSection = id;
           }
         });
 
+        // Default to intro if no clear section is visible and we're near the top
+        if (
+          scrollY < 500 &&
+          (highestRatio < 0.3 || mostVisibleSection === "")
+        ) {
+          mostVisibleSection = "intro";
+        }
+
+        console.log(
+          "Most visible section:",
+          mostVisibleSection,
+          "Ratio:",
+          highestRatio,
+          "ScrollY:",
+          scrollY
+        );
+
         setCurrentSection(mostVisibleSection);
       },
       {
         threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        // Use a more aggressive root margin to improve detection
+        rootMargin: "-10% 0px -10% 0px",
       }
     );
 

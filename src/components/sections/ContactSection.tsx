@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { MdOutlineMail } from "react-icons/md";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import GlassBackground from "@/components/GlassBackground";
 
 export default function ContactSection() {
   const { theme } = useTheme();
@@ -27,8 +28,9 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="min-h-screen flex flex-col justify-between"
+      className="min-h-screen flex flex-col justify- relative overflow-hidden"
     >
+      <GlassBackground color={highlightColor} />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl flex-1 flex flex-col justify-center mt-16">
         <div className="flex flex-col items-center justify-center">
           <h1

@@ -10,6 +10,7 @@ import Image from "next/image";
 import emoji from "react-easy-emoji";
 import { Divider } from "@mui/material";
 import { BiLinkExternal } from "react-icons/bi";
+import GlassBackground from "@/components/GlassBackground";
 
 export default function AboutSection() {
   const { theme } = useTheme();
@@ -120,7 +121,11 @@ export default function AboutSection() {
   };
 
   return (
-    <section id="about" className="min-h-screen flex flex-col justify-between">
+    <section
+      id="about"
+      className="min-h-screen flex flex-col justify- relative overflow-hidden"
+    >
+      <GlassBackground color={highlightColor} />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl mt-16">
         <motion.h1
           className="text-4xl font-bold mb-6"

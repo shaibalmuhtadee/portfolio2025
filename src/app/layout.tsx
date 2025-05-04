@@ -33,10 +33,13 @@ export default function RootLayout({
     <html lang="en" className={roboto.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class">
-          <div id="grain-overlay"></div>
-          <NavBar />
-          <ScrollBar />
-          <div className="hidden lg:block">
+          <div className="relative z-50">
+            <NavBar />
+          </div>
+          <div className="relative z-40">
+            <ScrollBar />
+          </div>
+          <div className="hidden lg:block relative z-30">
             <EmailSidebar />
           </div>
           <SmoothScroll>{children}</SmoothScroll>

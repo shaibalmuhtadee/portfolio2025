@@ -11,6 +11,7 @@ import TimelineDot from "@mui/lab/TimelineDot";
 import TimelineOppositeContent, {
   timelineOppositeContentClasses,
 } from "@mui/lab/TimelineOppositeContent";
+import GlassBackground from "@/components/GlassBackground";
 
 type ScrollDirection = "up" | "down" | "none";
 function useScrollDirection(threshold: number = 10): ScrollDirection {
@@ -89,8 +90,9 @@ export default function ExperienceSection() {
   return (
     <section
       id="experience"
-      className="min-h-screen flex flex-col justify-between"
+      className="min-h-screen flex flex-col justify-between relative overflow-hidden"
     >
+      <GlassBackground color={highlightColor} />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl mt-16">
         <motion.h1
           className="text-4xl font-bold mb-6"
