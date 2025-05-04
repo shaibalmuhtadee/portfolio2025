@@ -25,11 +25,14 @@ export default function ContactSection() {
     : "text-gray-400";
 
   return (
-    <section className="min-h-screen flex flex-col justify-between">
+    <section
+      id="contact"
+      className="min-h-screen flex flex-col justify-between"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-6xl flex-1 flex flex-col justify-center mt-16">
         <div className="flex flex-col items-center justify-center">
           <h1
-            id="contact"
+            id="contact_bottom"
             className={`text-5xl font-bold mb-6 text-center text-[${highlightColor}]`}
           >
             Let's collaborate?

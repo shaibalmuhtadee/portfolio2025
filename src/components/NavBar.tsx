@@ -91,7 +91,7 @@ const NavBar = () => {
     { label: "Experience", href: "/#experience" },
     { label: "Projects", href: "/#projects" },
     { label: "Skills", href: "/#skills" },
-    { label: "Contact", href: "/#contact" },
+    { label: "Contact", href: "/#contact_bottom" },
   ];
 
   return (
