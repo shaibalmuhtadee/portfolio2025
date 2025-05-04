@@ -284,8 +284,8 @@ export default function ExperienceSection() {
                       >
                         {[
                           "Create scalable and high-impact software solutions that grow your business quickly",
-                          "Solve interesting and challenging problems in full-stack development to solve your real-world problems in production",
-                          "Collaborate with driven teams, contribute to a shared mission, and work alongside your talented engineers",
+                          "Tackle complex and interesting challenges in full-stack development to solve your real-world problems",
+                          "Collaborate with passionate teams, contribute to a shared mission, and work alongside your talented engineers",
                         ].map((item, index) => (
                           <motion.li key={index} variants={itemVariants}>
                             {item}

@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { useEffect, useState, useRef } from "react";
 import { HiArrowDown } from "react-icons/hi";
 import GlassBackground from "@/components/GlassBackground";
+import TypewriterEffect from "@/components/TypewriterEffect";
 
 export default function IntroSection() {
   const { resolvedTheme } = useTheme();
@@ -84,22 +85,24 @@ export default function IntroSection() {
             variants={headingVariants}
             className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-4"
           >
-            Shaibal Muhtadee.
+            Shaibal Muhtadee
           </motion.h1>
 
           <motion.h2
             variants={headingVariants}
-            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-8 opacity-80"
+            className="text-4xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-8 opacity-80"
           >
-            I build things for the web.
+            <TypewriterEffect
+              words={["Engineer.", "Problem Solver.", "Builder of Things."]}
+            />
           </motion.h2>
 
           <motion.div variants={childVariants}>
             <p className="text-lg md:text-xl mb-10 max-w-xl leading-relaxed">
-              I'm a software engineer specializing in building exceptional
-              digital experiences. Currently, I'm focused on creating
-              accessible, human-centered products that solve real-world
-              problems.
+              I'm a software engineer with a passion for solving real-world
+              problems through clean, efficient code. I'm currently looking for
+              opportunities where I can apply my skills and experience to
+              meaningful, challenging, and fun projects.
             </p>
           </motion.div>
 
