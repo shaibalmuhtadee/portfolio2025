@@ -12,9 +12,50 @@ import TimelineOppositeContent, {
   timelineOppositeContentClasses,
 } from "@mui/lab/TimelineOppositeContent";
 
+type ScrollDirection = "up" | "down" | "none";
+function useScrollDirection(threshold: number = 10): ScrollDirection {
+  const [scrollDirection, setScrollDirection] =
+    useState<ScrollDirection>("none");
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+
+    const updateScrollDirection = () => {
+      const scrollY = window.scrollY;
+      const direction = scrollY > lastScrollY ? "down" : "up";
+
+      // Only update if the threshold is exceeded
+      if (Math.abs(scrollY - lastScrollY) > threshold) {
+        setScrollDirection(direction);
+        lastScrollY = scrollY > 0 ? scrollY : 0;
+      }
+
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollDirection);
+        ticking = true;
+      }
+    };
+
+    // Add scroll event listener
+    window.addEventListener("scroll", onScroll);
+
+    // Clean up
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+
+  return scrollDirection;
+}
+
 export default function ExperienceSection() {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const scrollDirection = useScrollDirection();
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -133,6 +174,7 @@ export default function ExperienceSection() {
                   viewport={{ once: false, margin: "-20% 0px" }}
                 >
                   <motion.div
+                    key={scrollDirection}
                     style={{
                       position: "absolute",
                       top: 0,
@@ -142,7 +184,11 @@ export default function ExperienceSection() {
                       display: "flex",
                       justifyContent: "center",
                     }}
-                    initial={{ scaleY: 0, transformOrigin: "top" }}
+                    initial={{
+                      scaleY: 0,
+                      transformOrigin:
+                        scrollDirection == "down" ? "top" : "bottom",
+                    }}
                     whileInView={{ scaleY: 1 }}
                     viewport={{ once: false, margin: "-20% 0px" }}
                     transition={{ duration: 1.2, delay: 0.2 }}
@@ -276,6 +322,7 @@ export default function ExperienceSection() {
                   viewport={{ once: false, margin: "-20% 0px" }}
                 >
                   <motion.div
+                    key={scrollDirection}
                     style={{
                       position: "absolute",
                       top: 0,
@@ -285,7 +332,11 @@ export default function ExperienceSection() {
                       display: "flex",
                       justifyContent: "center",
                     }}
-                    initial={{ scaleY: 0, transformOrigin: "top" }}
+                    initial={{
+                      scaleY: 0,
+                      transformOrigin:
+                        scrollDirection == "down" ? "top" : "bottom",
+                    }}
                     whileInView={{ scaleY: 1 }}
                     viewport={{ once: false, margin: "-20% 0px" }}
                     transition={{ duration: 1.2, delay: 0.2 }}
