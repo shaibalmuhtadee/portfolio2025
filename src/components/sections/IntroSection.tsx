@@ -6,6 +6,8 @@ import { useEffect, useState, useRef } from "react";
 import { HiArrowDown } from "react-icons/hi";
 import GlassBackground from "@/components/GlassBackground";
 import TypewriterEffect from "@/components/TypewriterEffect";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 export default function IntroSection() {
   const { resolvedTheme } = useTheme();
@@ -106,32 +108,58 @@ export default function IntroSection() {
             </p>
           </motion.div>
 
-          <motion.div variants={childVariants} className="flex gap-5">
-            <motion.a
-              href="#projects"
-              className={`px-8 py-4 rounded-md font-medium text-lg transition-all duration-300 ${
-                resolvedTheme === "dark" ? "text-gray-900" : "text-white"
-              }`}
-              style={{
-                backgroundColor: highlightColor,
-              }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              View My Work
-            </motion.a>
-            <motion.a
-              href="#contact"
-              className="px-8 py-4 rounded-md font-medium text-lg border-2 transition-all duration-300"
-              style={{ borderColor: highlightColor }}
-              whileHover={{
-                backgroundColor: "rgba(255,255,255,0.05)",
-                scale: 1.05,
-              }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Contact Me
-            </motion.a>
+          <motion.div variants={childVariants}>
+            <Stack spacing={2} direction="row">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  variant="contained"
+                  href="#projects"
+                  sx={{
+                    backgroundColor: highlightColor,
+                    color: resolvedTheme === "dark" ? "text.primary" : "white",
+                    "&:hover": {
+                      backgroundColor: highlightColor,
+                    },
+                    padding: "0.75rem 2rem",
+                    fontSize: "1.125rem",
+                    borderRadius: "0.375rem",
+                    fontWeight: 500,
+                    textTransform: "none",
+                  }}
+                >
+                  View My Work
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  variant="outlined"
+                  href="#contact"
+                  sx={{
+                    borderColor: highlightColor,
+                    borderWidth: 2,
+                    color: resolvedTheme === "dark" ? "white" : "inherit",
+                    "&:hover": {
+                      borderColor: highlightColor,
+                      borderWidth: 2,
+                      backgroundColor: "rgba(255,255,255,0.05)",
+                    },
+                    padding: "0.75rem 2rem",
+                    fontSize: "1.125rem",
+                    borderRadius: "0.375rem",
+                    fontWeight: 500,
+                    textTransform: "none",
+                  }}
+                >
+                  Contact Me
+                </Button>
+              </motion.div>
+            </Stack>
           </motion.div>
         </motion.div>
       </div>
