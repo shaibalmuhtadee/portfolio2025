@@ -16,6 +16,7 @@
 .dark {
   --background: var(--dark-primary);
   --foreground: var(--light-primary);
+  scrollbar-color: rgba(200, 200, 200, 0.646) transparent; /* Light gray for dark mode */
 }
 
 html {
@@ -28,15 +29,32 @@ body {
   font-family: var(--font-roboto, Arial, Helvetica, sans-serif);
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-::-webkit-scrollbar {
+/* Hide the scrollbar track and buttons */
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-button {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
+/* Keep the scrollbar thumb (the draggable bar) */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.4); /* Default for light mode */
+  border-radius: 10px;
+}
+
+/* Ensure the scrollbar itself is still shown */
+::-webkit-scrollbar {
+  width: 8px; /* or any width you like */
+}
+
+/* Firefox scrollbar styling */
 * {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  scrollbar-color: rgba(0, 0, 0, 0.4) transparent; /* Default for light mode */
+  scrollbar-width: thin; /* or 'auto' */
+}
+
+/* Dark mode scrollbar styles */
+.dark ::-webkit-scrollbar-thumb {
+  background-color: rgba(200, 200, 200, 0.5); /* Light gray for dark mode */
 }
 
 /* Pulsing animation for timeline dot */
