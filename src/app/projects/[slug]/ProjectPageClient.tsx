@@ -100,17 +100,22 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
                     alt={project.name}
                     width={1200}
                     height={675}
-                    className="w-full h-auto"
+                    className="w-full h-auto transition-transform duration-500 ease-in-out group-hover:scale-110"
                     priority
                   />
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <a
                     href={project.image}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="absolute top-3 right-3 text-white bg-black/50 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 z-10 flex items-center justify-center"
+                    aria-label={`View ${project.name} image in full size`}
                   >
-                    <LiaExternalLinkAltSolid size={20} />
+                    <span className="sr-only">View full image</span>
                   </a>
+                  <div className="absolute top-3 right-3 text-white bg-black/70 p-2 rounded-full opacity-0 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-500 z-20">
+                    <LiaExternalLinkAltSolid size={20} />
+                  </div>
                 </>
               ) : (
                 <div className="text-gray-500">Project Image</div>

@@ -45,14 +45,6 @@ export default function ContactSection() {
             excited to take on new projects and explore fresh opportunities in
             software development—feel free to reach out!
           </p>
-          <div className="mb-8 text-2xl space-y-4">
-            <p>
-              I&apos;m currently seeking new opportunities where I can apply my
-              skills and continue to grow. Feel free to reach out if you&apos;d
-              like to connect!
-            </p>
-            <p>Let&apos;s work together to build something amazing.</p>
-          </div>
           <div className="relative group">
             {/* Animated border placeholder */}
             <span
