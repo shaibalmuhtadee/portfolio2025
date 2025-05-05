@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 
 export default function SmoothScroll({
@@ -12,6 +12,7 @@ export default function SmoothScroll({
   const scrollRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const [initialHashProcessed, setInitialHashProcessed] = useState(false);
 
   // Handle smooth scrolling
   useEffect(() => {
@@ -86,10 +87,23 @@ export default function SmoothScroll({
           targetScroll = targetPosition;
           isScrolling = true;
 
+          // For initial load with hash, we need to set currentScroll too
+          // to prevent jumping when starting to scroll
+          if (!initialHashProcessed) {
+            currentScroll = targetPosition;
+            if (contentRef.current) {
+              contentRef.current.style.transform = `translate3d(0, ${-currentScroll.toFixed(
+                2
+              )}px, 0)`;
+            }
+            setInitialHashProcessed(true);
+          }
+
           // Prevent default hash behavior
-          return false;
+          return true;
         }
       }
+      return false;
     };
 
     // Start animation
@@ -99,8 +113,17 @@ export default function SmoothScroll({
     window.addEventListener("hashchange", handleHashChange);
     rafId = requestAnimationFrame(smoothScroll);
 
-    // Handle initial hash in URL
-    setTimeout(handleHashChange, 100);
+    // Handle initial hash in URL - with greater delay to ensure DOM is fully ready
+    setTimeout(() => {
+      if (window.location.hash && !initialHashProcessed) {
+        handleHashChange();
+        // Force a small scroll to ensure our scroll handlers take over
+        setTimeout(() => {
+          window.scrollBy(0, 1);
+          window.scrollBy(0, -1);
+        }, 50);
+      }
+    }, 300);
 
     // Add mutation observer for dynamic content
     const observer = new MutationObserver(() => {
@@ -125,7 +148,7 @@ export default function SmoothScroll({
       cancelAnimationFrame(rafId);
       observer.disconnect();
     };
-  }, [pathname]);
+  }, [pathname, initialHashProcessed]);
 
   // Handle clicks on anchor links
   useEffect(() => {

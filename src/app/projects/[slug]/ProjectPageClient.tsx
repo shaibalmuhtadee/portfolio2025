@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { FaArrowLeft } from "react-icons/fa";
 import GlassBackground from "@/components/GlassBackground";
-import Link from "next/link";
 import { Project } from "@/data/projects";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
 
@@ -35,6 +34,19 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
       : "#374151"
     : "#374151";
 
+  // Custom function to handle back to projects navigation
+  const handleBackToProjects = () => {
+    // Navigate to home page
+    router.push("/");
+
+    // Then explicitly scroll to the projects section after navigation
+    // Store that we want to scroll to projects after navigation
+    if (typeof window !== "undefined") {
+      // Set a flag in sessionStorage to indicate we need to scroll to projects
+      sessionStorage.setItem("scrollToProjects", "true");
+    }
+  };
+
   // Loading state when not mounted
   if (!mounted) {
     return <div className="min-h-screen"></div>;
@@ -50,16 +62,16 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Link
-            href="/#projects"
-            className="flex items-center gap-2 mb-8 group w-fit"
+          <button
+            onClick={handleBackToProjects}
+            className="flex items-center gap-2 mb-8 group w-fit cursor-pointer"
           >
             <FaArrowLeft
               style={{ color: highlightColor }}
               className="group-hover:-translate-x-1 transition-transform duration-300"
             />
             <span className="text-lg">Back to projects</span>
-          </Link>
+          </button>
 
           <h1
             className="text-4xl sm:text-5xl font-bold mb-4"

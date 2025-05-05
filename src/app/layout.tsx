@@ -6,6 +6,7 @@ import NavBar from "../components/NavBar";
 import ScrollBar from "../components/ScrollBar";
 import EmailSidebar from "../components/EmailSidebar";
 import SmoothScroll from "@/components/SmoothScroll";
+import Script from "next/script";
 
 const roboto = Roboto({
   weight: ["400", "500", "700"],
@@ -67,8 +68,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={roboto.variable} suppressHydrationWarning>
+      <head>
+        {/* Disable Dark Reader browser extension for this site to prevent hydration issues */}
+        <meta name="darkreader-lock" />
+      </head>
       <body>
-        <ThemeProvider attribute="class">
+        <ThemeProvider
+          attribute="class"
+          enableSystem={true}
+          defaultTheme="system"
+        >
           <div className="relative z-50">
             <NavBar />
           </div>
@@ -80,6 +89,38 @@ export default function RootLayout({
           </div>
           <SmoothScroll>{children}</SmoothScroll>
         </ThemeProvider>
+
+        {/* Script to remove Dark Reader inline attributes if they exist */}
+        <Script id="fix-darkreader-hydration" strategy="afterInteractive">
+          {`
+            function removeDarkReaderAttributes() {
+              const elements = document.querySelectorAll('[data-darkreader-inline-color], [data-darkreader-inline-bgcolor], [data-darkreader-inline-fill], [data-darkreader-inline-stroke]');
+              elements.forEach(el => {
+                el.removeAttribute('data-darkreader-inline-color');
+                el.removeAttribute('data-darkreader-inline-bgcolor');
+                el.removeAttribute('data-darkreader-inline-fill');
+                el.removeAttribute('data-darkreader-inline-stroke');
+                
+                // Clean up inline styles that contain darkreader variables
+                if (el.style && el.style.cssText) {
+                  const style = el.style.cssText;
+                  if (style.includes('--darkreader-inline')) {
+                    // Create a new style without the darkreader properties
+                    const newStyle = style
+                      .split(';')
+                      .filter(prop => !prop.includes('--darkreader-inline'))
+                      .join(';');
+                    el.style.cssText = newStyle;
+                  }
+                }
+              });
+            }
+            
+            // Run immediately and also after a short delay to catch any late-rendered elements
+            removeDarkReaderAttributes();
+            setTimeout(removeDarkReaderAttributes, 500);
+          `}
+        </Script>
       </body>
     </html>
   );
