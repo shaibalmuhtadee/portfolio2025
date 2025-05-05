@@ -52,7 +52,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://shaibalmuhtadee.com",
   },
-  themeColor: "#ffffff",
   icons: {
     icon: [
       { rel: "icon", type: "image/svg+xml", url: "/favicon/favicon.svg" },

@@ -13,6 +13,26 @@ const SmoothScroll = ({ children }: SmoothScrollProps) => {
     null
   );
 
+  // Add a function to handle scrolling with offset
+  const scrollToElementWithOffset = (elementId: string) => {
+    const element = document.getElementById(elementId);
+
+    if (!element) return;
+
+    // Get the height of navbar plus some padding (adjust this value as needed)
+    const offset = 120; // Navbar height + extra padding
+
+    // Calculate position
+    const elementPosition = element.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+    // Scroll to the calculated position
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  };
+
   useEffect(() => {
     // Check if we should scroll to projects section
     const shouldScrollToProjects =
@@ -25,10 +45,7 @@ const SmoothScroll = ({ children }: SmoothScrollProps) => {
 
       // Give the page a moment to render before scrolling
       setTimeout(() => {
-        const projectsSection = document.getElementById("projects");
-        if (projectsSection) {
-          projectsSection.scrollIntoView({ behavior: "smooth" });
-        }
+        scrollToElementWithOffset("projects");
       }, 500);
     }
   }, [pathname]);
@@ -43,10 +60,7 @@ const SmoothScroll = ({ children }: SmoothScrollProps) => {
         // Small delay to ensure DOM is ready
         setTimeout(() => {
           const id = window.location.hash.substring(1);
-          const element = document.getElementById(id);
-          if (element) {
-            element.scrollIntoView({ behavior: "smooth" });
-          }
+          scrollToElementWithOffset(id);
         }, 100);
       }
     };
@@ -106,26 +120,23 @@ const SmoothScroll = ({ children }: SmoothScrollProps) => {
 
         if (!targetId) return;
 
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-          // Update URL without refreshing the page
-          if (pathname === "/" || href.startsWith("#")) {
-            window.history.pushState(null, "", `/#${targetId}`);
-          }
-
-          targetElement.scrollIntoView({ behavior: "smooth" });
-
-          // Reset timer if one is already running
-          if (scrollTimeout) clearTimeout(scrollTimeout);
-
-          // Set a new timeout for any cleanup needed after scrolling
-          const timeout = setTimeout(() => {
-            // Timeout logic (if needed)
-          }, 1000);
-
-          setScrollTimeout(timeout);
+        // Update URL without refreshing the page
+        if (pathname === "/" || href.startsWith("#")) {
+          window.history.pushState(null, "", `/#${targetId}`);
         }
+
+        // Use our custom scroll function with offset
+        scrollToElementWithOffset(targetId);
+
+        // Reset timer if one is already running
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+
+        // Set a new timeout for any cleanup needed after scrolling
+        const timeout = setTimeout(() => {
+          // Timeout logic (if needed)
+        }, 1000);
+
+        setScrollTimeout(timeout);
       }
     };
 
