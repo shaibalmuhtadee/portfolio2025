@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 
 const ScrollBar = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [navbarRight, setNavbarRight] = useState(0);
   const navbarRef = useRef<HTMLElement | null>(null);

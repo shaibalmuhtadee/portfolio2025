@@ -10,7 +10,7 @@ import { FiMenu } from "react-icons/fi";
 import { usePathname } from "next/navigation";
 
 const NavBar = () => {
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [currentSection, setCurrentSection] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

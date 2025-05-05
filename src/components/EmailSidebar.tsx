@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Divider } from "@mui/material";
 
 const EmailSidebar = () => {
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [navbarLeft, setNavbarLeft] = useState(0);
 
