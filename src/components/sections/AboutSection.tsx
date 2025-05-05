@@ -159,7 +159,7 @@ export default function AboutSection() {
               <div className="pt-8 sm:pt-10 px-6 sm:px-10 md:px-16 w-full">
                 <div className="w-full rounded-xl overflow-hidden max-w-[200px] sm:max-w-none mx-auto">
                   <Image
-                    src="/ace.png"
+                    src="/profile.gif"
                     alt="Profile"
                     className="object-cover w-full h-full"
                     width={240}
