@@ -292,16 +292,16 @@ export default function ExperienceSection() {
                               "&::after": {
                                 content: '""',
                                 position: "absolute",
-                                top: "-2px",
-                                left: "-2px",
-                                right: "-2px",
-                                bottom: "-2px",
+                                top: "-4px",
+                                left: "-4px",
+                                right: "-4px",
+                                bottom: "-4px",
                                 borderRadius: "50%",
                                 background: "transparent",
-                                border: `1.5px solid ${highlightColor}`,
-                                opacity: 0.6,
+                                border: `2px solid ${highlightColor}`,
+                                opacity: 0.7,
                                 animation:
-                                  "dot-breathe 3s infinite ease-in-out",
+                                  "pulsingBorder 2s infinite ease-in-out",
                               },
                             }
                           : {}

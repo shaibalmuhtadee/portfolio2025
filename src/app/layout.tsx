@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: "Shaibal Muhtadee | Portfolio",
     images: [
       {
-        url: "https://shaibalmuhtadee.com/og-image.png",
+        url: "/portfolio.png", // Using portfolio.png from the public folder
         width: 1200,
         height: 630,
         alt: "Shaibal Muhtadee Portfolio Screenshot",
