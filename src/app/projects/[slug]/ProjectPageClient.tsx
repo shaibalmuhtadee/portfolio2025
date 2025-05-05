@@ -8,6 +8,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import GlassBackground from "@/components/GlassBackground";
 import { Project } from "@/data/projects";
 import { LiaExternalLinkAltSolid } from "react-icons/lia";
+import Image from "next/image";
 
 type ProjectPageClientProps = {
   project: Project;
@@ -15,7 +16,7 @@ type ProjectPageClientProps = {
 
 export default function ProjectPageClient({ project }: ProjectPageClientProps) {
   const router = useRouter();
-  const { resolvedTheme } = useTheme();
+  const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -23,15 +24,9 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
   }, []);
 
   const highlightColor = mounted
-    ? resolvedTheme === "dark"
+    ? theme === "dark"
       ? "#F2F230"
       : "#3185FC"
-    : "#374151";
-
-  const textColor = mounted
-    ? resolvedTheme === "dark"
-      ? "#D1D5DB"
-      : "#374151"
     : "#374151";
 
   // Custom function to handle back to projects navigation
@@ -100,10 +95,13 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
             <div className="relative cursor-pointer border bg-gray-800/30 rounded-lg aspect-video flex items-center justify-center group overflow-hidden">
               {project.image ? (
                 <>
-                  <img
+                  <Image
                     src={project.image}
                     alt={project.name}
-                    className="w-full h-full object-cover rounded-lg transition-transform duration-300 group-hover:scale-105"
+                    width={1200}
+                    height={675}
+                    className="w-full h-auto"
+                    priority
                   />
                   <a
                     href={project.image}

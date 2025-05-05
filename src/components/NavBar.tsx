@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import ThemeSwitch from "./ThemeSwitch";
 import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import StyleBreadcrumbs from "@mui/material/Breadcrumbs";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { FiMenu } from "react-icons/fi";
@@ -14,7 +14,6 @@ const NavBar = () => {
   const [mounted, setMounted] = useState(false);
   const [currentSection, setCurrentSection] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const sections = useRef<{ [key: string]: IntersectionObserverEntry }>({});
   const pathname = usePathname();
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {

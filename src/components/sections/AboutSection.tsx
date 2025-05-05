@@ -51,20 +51,6 @@ export default function AboutSection() {
       : "bg-[#363f63]"
     : "bg-[#374151]";
 
-  const underlineColor = mounted
-    ? theme === "dark"
-      ? highlightColor
-      : highlightColor
-    : "#374151";
-
-  const waveStyle = {
-    display: "inline-block",
-    transformOrigin: "70% 70%",
-    "&:hover": {
-      animation: "wave 2.5s ease-in-out infinite",
-    },
-  };
-
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -106,14 +92,14 @@ export default function AboutSection() {
     once: false,
   });
 
-  const typographyStyles = {
-    textTransform: "uppercase",
-    fontWeight: "bold",
-    letterSpacing: "-0.09em",
-  };
+  // Using TypeScript interfaces for the hexToRgba function parameters with proper return type
+  interface HexToRgbaParams {
+    hex: string;
+    alpha: number;
+  }
 
-  // Helper function to convert hex to rgba
-  const hexToRgba = (hex: any, alpha: any) => {
+  // Helper function to convert hex to rgba with proper typing
+  const hexToRgba = ({ hex, alpha }: HexToRgbaParams): string => {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
@@ -260,7 +246,10 @@ export default function AboutSection() {
                 graduated from the{" "}
                 <span
                   style={{
-                    backgroundColor: hexToRgba(highlightColor, 0.3),
+                    backgroundColor: hexToRgba({
+                      hex: highlightColor,
+                      alpha: 0.3,
+                    }),
                   }}
                   className="inline-block cursor-pointer"
                 >

@@ -99,9 +99,9 @@ export default function IntroSection() {
 
           <motion.div variants={childVariants}>
             <p className="text-lg md:text-xl mb-10 max-w-xl leading-relaxed">
-              I'm a software engineer with a passion for solving real-world
-              problems through clean, efficient code. I'm currently looking for
-              opportunities where I can apply my skills and experience to
+              I&apos;m a software engineer with a passion for solving real-world
+              problems through clean, efficient code. I&apos;m currently looking
+              for opportunities where I can apply my skills and experience to
               meaningful, challenging, and fun projects.
             </p>
           </motion.div>

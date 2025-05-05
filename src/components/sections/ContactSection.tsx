@@ -37,14 +37,22 @@ export default function ContactSection() {
             id="contact_bottom"
             className={`text-5xl font-bold mb-6 text-center text-[${highlightColor}]`}
           >
-            Let's collaborate?
+            Let&apos;s collaborate?
           </h1>
           <p className="max-w-xl text-center mb-8 text-lg">
             Have a project in mind, an interesting offer, or just want to hang
-            out? Click the button below to send me an email. I'm always excited
-            to take on new projects and explore fresh opportunities in software
-            development—feel free to reach out!
+            out? Click the button below to send me an email. I&apos;m always
+            excited to take on new projects and explore fresh opportunities in
+            software development—feel free to reach out!
           </p>
+          <div className="mb-8 text-2xl space-y-4">
+            <p>
+              I&apos;m currently seeking new opportunities where I can apply my
+              skills and continue to grow. Feel free to reach out if you&apos;d
+              like to connect!
+            </p>
+            <p>Let&apos;s work together to build something amazing.</p>
+          </div>
           <div className="relative group">
             {/* Animated border placeholder */}
             <span

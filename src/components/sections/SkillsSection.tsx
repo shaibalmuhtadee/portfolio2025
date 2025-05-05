@@ -53,11 +53,6 @@ export default function SkillsSection() {
     letterSpacing: "-0.09em",
   };
 
-  const gridSizes = {
-    label: { xs: 12 },
-    content: { xs: 12 },
-  };
-
   const iconMap = {
     Python: SiPython,
     JavaScript: SiJavascript,
@@ -227,7 +222,19 @@ export default function SkillsSection() {
       ));
   };
 
-  const SkillCategory = ({ skill, index }: { skill: any; index: number }) => {
+  // Define a type for skill item
+  interface SkillItemType {
+    label: string;
+    content: string;
+  }
+
+  const SkillCategory = ({
+    skill,
+    index,
+  }: {
+    skill: SkillItemType;
+    index: number;
+  }) => {
     const ref = React.useRef(null);
     const isInView = useInView(ref, {
       margin: "-15% 0px -15% 0px",

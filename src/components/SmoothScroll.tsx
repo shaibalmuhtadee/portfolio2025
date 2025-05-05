@@ -1,212 +1,146 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useEffect, useState, ReactNode } from "react";
 
-export default function SmoothScroll({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const contentRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
+interface SmoothScrollProps {
+  children: ReactNode;
+}
+
+const SmoothScroll = ({ children }: SmoothScrollProps) => {
   const pathname = usePathname();
-  const [initialHashProcessed, setInitialHashProcessed] = useState(false);
+  const [scrollTimeout, setScrollTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
 
-  // Handle smooth scrolling
   useEffect(() => {
-    let currentScroll = 0;
-    let targetScroll = 0;
-    let rafId: number;
-    let isScrolling = false;
+    // Check if we should scroll to projects section
+    const shouldScrollToProjects =
+      typeof window !== "undefined" &&
+      sessionStorage.getItem("scrollToProjects") === "true";
 
-    const updateBodyHeight = () => {
-      if (contentRef.current && scrollRef.current) {
-        // Set the scroll container height to match content
-        scrollRef.current.style.height = `${contentRef.current.scrollHeight}px`;
-      }
-    };
+    if (shouldScrollToProjects) {
+      // Clear the flag
+      sessionStorage.removeItem("scrollToProjects");
 
-    const handleScroll = () => {
-      targetScroll = window.scrollY;
-      isScrolling = true;
-    };
-
-    const smoothScroll = () => {
-      // Calculate the difference between target and current
-      const diff = targetScroll - currentScroll;
-
-      // If we're basically at the target position, just set it directly
-      if (Math.abs(diff) < 0.1) {
-        currentScroll = targetScroll;
-        isScrolling = false;
-      } else {
-        // Premium smooth easing - adjust these values for different feel
-        // Lower values = smoother, laggier feel (0.03-0.08)
-        // Higher values = more responsive but less smooth (0.1-0.3)
-        const easing = 0.05;
-
-        // Apply easing with additional velocity based on scroll distance
-        // This creates more dramatic lag when scrolling quickly
-        const velocity = Math.min(Math.abs(diff) * 0.002, 0.2);
-        currentScroll += diff * (easing + velocity);
-      }
-
-      if (contentRef.current) {
-        // Apply the transform with hardware acceleration for smoother animation
-        contentRef.current.style.transform = `translate3d(0, ${-currentScroll.toFixed(
-          2
-        )}px, 0)`;
-      }
-
-      // Continue animation loop
-      rafId = requestAnimationFrame(smoothScroll);
-    };
-
-    // Handle hash links
-    const handleHashChange = () => {
-      // Get hash from URL
-      const hash = window.location.hash;
-      if (hash) {
-        // Remove the # symbol
-        const targetId = hash.substring(1);
-        // Find the element with that ID
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-          // Get the element's position relative to the document
-          const rect = targetElement.getBoundingClientRect();
-          const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop;
-
-          // Calculate target scroll position (with a small offset for better visibility)
-          const targetPosition = rect.top + scrollTop - 120; // 120px offset from top
-
-          // Set the target scroll position
-          targetScroll = targetPosition;
-          isScrolling = true;
-
-          // For initial load with hash, we need to set currentScroll too
-          // to prevent jumping when starting to scroll
-          if (!initialHashProcessed) {
-            currentScroll = targetPosition;
-            if (contentRef.current) {
-              contentRef.current.style.transform = `translate3d(0, ${-currentScroll.toFixed(
-                2
-              )}px, 0)`;
-            }
-            setInitialHashProcessed(true);
-          }
-
-          // Prevent default hash behavior
-          return true;
+      // Give the page a moment to render before scrolling
+      setTimeout(() => {
+        const projectsSection = document.getElementById("projects");
+        if (projectsSection) {
+          projectsSection.scrollIntoView({ behavior: "smooth" });
         }
+      }, 500);
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    // Logic for managing session and scroll events
+    if (typeof window === "undefined") return;
+
+    // Handle browser back/forward navigation
+    const handlePopState = () => {
+      if (window.location.hash) {
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+          const id = window.location.hash.substring(1);
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }, 100);
       }
-      return false;
     };
 
-    // Start animation
-    updateBodyHeight();
-    window.addEventListener("scroll", handleScroll, { passive: true }); // Passive for better performance
-    window.addEventListener("resize", updateBodyHeight);
-    window.addEventListener("hashchange", handleHashChange);
-    rafId = requestAnimationFrame(smoothScroll);
-
-    // Handle initial hash in URL - with greater delay to ensure DOM is fully ready
-    setTimeout(() => {
-      if (window.location.hash && !initialHashProcessed) {
-        handleHashChange();
-        // Force a small scroll to ensure our scroll handlers take over
-        setTimeout(() => {
-          window.scrollBy(0, 1);
-          window.scrollBy(0, -1);
-        }, 50);
-      }
-    }, 300);
-
-    // Add mutation observer for dynamic content
-    const observer = new MutationObserver(() => {
-      // Debounce the height updates to not interfere with scroll performance
-      clearTimeout((window as any).resizeTimeout);
-      (window as any).resizeTimeout = setTimeout(() => {
-        updateBodyHeight();
-      }, 200);
-    });
-
-    if (contentRef.current) {
-      observer.observe(contentRef.current, {
-        childList: true,
-        subtree: true,
-      });
+    // Initial scroll if hash exists in URL
+    if (window.location.hash) {
+      handlePopState();
     }
 
+    window.addEventListener("popstate", handlePopState);
+
+    // Cleanup
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", updateBodyHeight);
-      window.removeEventListener("hashchange", handleHashChange);
-      cancelAnimationFrame(rafId);
-      observer.disconnect();
+      window.removeEventListener("popstate", handlePopState);
     };
-  }, [pathname, initialHashProcessed]);
+  }, []);
 
-  // Handle clicks on anchor links
   useEffect(() => {
+    // Intercept scroll attempts from internal links
     const handleLinkClick = (e: MouseEvent) => {
+      // Use proper type for the target
       const target = e.target as HTMLElement;
-      let anchor = target.closest("a");
 
-      // If we clicked on an anchor with a hash
+      // Find closest anchor element
+      const link = target.closest("a");
+
+      if (!link) return;
+
+      const href = link.getAttribute("href");
+
+      // Skip external links, non-hash links, or same-page links without hash
       if (
-        anchor &&
-        anchor.hash &&
-        anchor.pathname === window.location.pathname
+        !href ||
+        href.startsWith("http") ||
+        !href.includes("#") ||
+        href === "#" ||
+        link.target === "_blank"
+      ) {
+        return;
+      }
+
+      // Handle links to sections on the same page
+      if (
+        href.startsWith("#") ||
+        (pathname === "/" && href.startsWith("/#")) ||
+        (pathname !== "/" && href.includes("/#"))
       ) {
         e.preventDefault();
 
-        // Update URL without a full navigation
-        window.history.pushState({}, "", anchor.href);
+        let targetId: string;
 
-        // Find target element
-        const targetId = anchor.hash.substring(1);
+        if (href.startsWith("#")) {
+          targetId = href.slice(1);
+        } else {
+          targetId = href.split("#")[1];
+        }
+
+        if (!targetId) return;
+
         const targetElement = document.getElementById(targetId);
 
         if (targetElement) {
-          // Get position
-          const rect = targetElement.getBoundingClientRect();
-          const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop;
+          // Update URL without refreshing the page
+          if (pathname === "/" || href.startsWith("#")) {
+            window.history.pushState(null, "", `/#${targetId}`);
+          }
 
-          // Scroll to that position (with offset)
-          window.scrollTo({
-            top: rect.top + scrollTop - 120,
-            behavior: "smooth",
-          });
+          targetElement.scrollIntoView({ behavior: "smooth" });
+
+          // Reset timer if one is already running
+          if (scrollTimeout) clearTimeout(scrollTimeout);
+
+          // Set a new timeout for any cleanup needed after scrolling
+          const timeout = setTimeout(() => {
+            // Timeout logic (if needed)
+          }, 1000);
+
+          setScrollTimeout(timeout);
         }
       }
     };
 
     document.addEventListener("click", handleLinkClick);
-    return () => document.removeEventListener("click", handleLinkClick);
-  }, []);
 
-  return (
-    <>
-      <div ref={scrollRef} style={{ position: "relative", width: "100%" }} />
-      <div
-        ref={contentRef}
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
-          willChange: "transform",
-          pointerEvents: "auto",
-          zIndex: 1,
-        }}
-      >
-        {children}
-      </div>
-    </>
-  );
-}
+    return () => {
+      document.removeEventListener("click", handleLinkClick);
+
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+    };
+  }, [pathname, scrollTimeout]);
+
+  return <>{children}</>;
+};
+
+export default SmoothScroll;

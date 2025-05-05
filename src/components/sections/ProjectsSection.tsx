@@ -9,7 +9,8 @@ import Link from "next/link";
 import { projectsData } from "@/data/projects";
 
 export default function ProjectsSection() {
-  const { theme, resolvedTheme } = useTheme();
+  // Remove unused theme variable
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
