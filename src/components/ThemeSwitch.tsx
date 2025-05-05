@@ -6,7 +6,7 @@ import { BsMoonFill, BsSunFill } from "react-icons/bs";
 
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false);
-  const { systemTheme, theme, setTheme } = useTheme();
+  const { systemTheme, theme, resolvedTheme, setTheme } = useTheme();
 
   // Move this inside useEffect to avoid hydration mismatch
   const [currentTheme, setCurrentTheme] = useState<string | undefined>(
@@ -16,9 +16,9 @@ const ThemeSwitch = () => {
   // Ensure the component is mounted before rendering and handle theme determination client-side only
   useEffect(() => {
     setMounted(true);
-    const resolvedTheme = theme === "system" ? systemTheme : theme;
+    // Use resolvedTheme which gives us the actual theme accounting for system preference
     setCurrentTheme(resolvedTheme);
-  }, [systemTheme, theme]);
+  }, [systemTheme, theme, resolvedTheme]);
 
   // Use a server-safe rendering approach
   if (!mounted) {

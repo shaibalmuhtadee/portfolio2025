@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 
 const ScrollBar = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [navbarRight, setNavbarRight] = useState(0);
   const navbarRef = useRef<HTMLElement | null>(null);
@@ -51,16 +51,16 @@ const ScrollBar = () => {
   }, []);
 
   const scrollBarColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "bg-[#F2F230]"
       : "bg-[#3185FC]"
-    : "bg-gray-700";
+    : "bg-[#F2F230]"; // Default to dark mode yellow which is visible on both modes
 
   const scrollBarBackgroundColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "bg-gray-700"
       : "bg-gray-300"
-    : "bg-gray-700";
+    : "bg-gray-700"; // Default to dark mode background
 
   useEffect(() => {
     const handleScroll = () => {

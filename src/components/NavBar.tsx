@@ -10,7 +10,7 @@ import { FiMenu } from "react-icons/fi";
 import { usePathname } from "next/navigation";
 
 const NavBar = () => {
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [currentSection, setCurrentSection] = useState("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -121,26 +121,30 @@ const NavBar = () => {
     return () => observer.disconnect();
   }, [pathname]); // Re-create observer if pathname changes
 
+  // New improved color handling that fixes the dark mode issue
   const textColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "text-white"
       : "text-black"
-    : "text-transparent";
+    : "text-white dark:text-white text-black"; // Safe default for both modes before hydration
+
   const breadcrumbColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "#F2F230"
       : "#3185FC"
-    : "transparent";
+    : "#F2F230"; // Default to dark mode color which will be visible on both light/dark
+
   const underlineColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "bg-white"
       : "bg-black"
-    : "bg-transparent";
+    : "bg-white dark:bg-white bg-black"; // Safe default for both modes
+
   const navBorderColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "#606060"
       : "#000000"
-    : "transparent";
+    : "#606060"; // Default to a color visible in both modes
 
   const linkStyles = {
     base: `relative transition-colors group hover:drop-shadow-sm text-lg`,
@@ -173,20 +177,20 @@ const NavBar = () => {
                     className="cursor-pointer transition-colors duration-300"
                     style={{
                       fill: mounted
-                        ? theme === "dark"
+                        ? resolvedTheme === "dark"
                           ? "white"
                           : "black"
-                        : "gray",
+                        : "white", // Default to white for dark mode which is better for visibility
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.fill = breadcrumbColor;
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.fill = mounted
-                        ? theme === "dark"
+                        ? resolvedTheme === "dark"
                           ? "white"
                           : "black"
-                        : "gray";
+                        : "white";
                     }}
                   >
                     <path d="M.06 120.57c0-17.66.15-35.32-.09-53-.08-5.66 1.9-9.25 6.86-12.08q46.59-26.58 93-53.56c4.37-2.54 8.16-2.63 12.57-.06q47 27.4 94.13 54.52a10.17 10.17 0 0 1 5.6 9.72q-.13 54.48 0 109c0 4.67-1.71 7.84-5.77 10.16q-47.4 27.19-94.68 54.56c-3.88 2.25-7.3 2.31-11.21 0q-47.45-27.58-95-55c-3.9-2.25-5.44-5.38-5.41-9.84.13-18.16 0-36.31 0-54.47Zm195.1.55c0-15.66-.13-31.33.09-47 0-3.62-1-5.6-4.21-7.42q-40.95-23.4-81.68-47.18c-2.5-1.45-4.25-1.34-6.69.07Q62.09 43.14 21.36 66.4c-3.29 1.87-4.64 3.73-4.62 7.66q.27 46.49 0 93c0 3.83 1.09 5.88 4.44 7.79q40.74 23.25 81.23 47c2.7 1.57 4.53 1.45 7.13-.07q41-23.81 82.18-47.3c2.72-1.55 3.52-3.3 3.49-6.31-.1-15.73-.02-31.39-.02-47.05Z"></path>
@@ -254,10 +258,10 @@ const NavBar = () => {
               onClick={handleMenuOpen}
               sx={{
                 color: mounted
-                  ? theme === "dark"
+                  ? resolvedTheme === "dark"
                     ? "#F2F230"
                     : "#3185FC"
-                  : "gray",
+                  : "#F2F230", // Default to something visible in both modes
               }}
             >
               <FiMenu size={24} />
@@ -273,17 +277,17 @@ const NavBar = () => {
               paper: {
                 sx: {
                   backgroundColor: mounted
-                    ? theme === "dark"
+                    ? resolvedTheme === "dark"
                       ? "rgba(17, 24, 39, 0.8)"
                       : "rgba(255, 255, 255, 0.8)"
-                    : "transparent",
+                    : "rgba(17, 24, 39, 0.8)",
                   backdropFilter: "blur(8px)",
                   border: "1px solid",
                   borderColor: mounted
-                    ? theme === "dark"
+                    ? resolvedTheme === "dark"
                       ? "rgba(255, 255, 255, 0.1)"
                       : "rgba(0, 0, 0, 0.1)"
-                    : "transparent",
+                    : "rgba(255, 255, 255, 0.1)",
                 },
               },
             }}
@@ -294,10 +298,10 @@ const NavBar = () => {
                 onClick={handleMenuClose}
                 sx={{
                   color: mounted
-                    ? theme === "dark"
+                    ? resolvedTheme === "dark"
                       ? "#F2F230"
                       : "#3185FC"
-                    : "gray",
+                    : "#F2F230",
                 }}
               >
                 <Link href={item.href} className="w-full">
@@ -309,10 +313,10 @@ const NavBar = () => {
               onClick={handleMenuClose}
               sx={{
                 color: mounted
-                  ? theme === "dark"
+                  ? resolvedTheme === "dark"
                     ? "#F2F230"
                     : "#3185FC"
-                  : "gray",
+                  : "#F2F230",
               }}
             >
               <ThemeSwitch />

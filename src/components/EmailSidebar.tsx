@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Divider } from "@mui/material";
 
 const EmailSidebar = () => {
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [navbarLeft, setNavbarLeft] = useState(0);
 
@@ -46,10 +46,10 @@ const EmailSidebar = () => {
   }, []);
 
   const dividerColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "#F2F230"
       : "#3185FC"
-    : "#374151";
+    : "#F2F230"; // Default to a color that's visible in both modes
 
   return (
     <div className="fixed top-[63vh] transform translate-y-[-50%]">
@@ -82,10 +82,10 @@ const EmailSidebar = () => {
           <p
             className={`${
               mounted
-                ? theme === "dark"
+                ? resolvedTheme === "dark"
                   ? "text-[#F2F230]"
                   : "text-[#3185FC]"
-                : "text-gray-700"
+                : "text-[#F2F230]"
             } text-sm font-medium tracking-wider rotate-[-90deg] origin-left whitespace-nowrap`}
           >
             shaibalmuhtadee@gmail.com
