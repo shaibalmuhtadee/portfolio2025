@@ -13,7 +13,7 @@ import { BiLinkExternal } from "react-icons/bi";
 import GlassBackground from "@/components/GlassBackground";
 
 export default function AboutSection() {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
@@ -22,31 +22,31 @@ export default function AboutSection() {
   }, []);
 
   const highlightColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "#F2F230"
       : "#3185FC"
     : "#374151";
 
   const profileCardColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "bg-[#1F2937]"
       : "bg-[#99a1af]"
     : "bg-[#374151]";
 
   const nameColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "text-white"
       : "text-black"
     : "text-white";
 
   const textColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "text-gray-300"
       : "text-gray-800"
     : "text-gray-800";
 
   const lineColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "bg-[#374151]"
       : "bg-[#363f63]"
     : "bg-[#374151]";

@@ -263,14 +263,14 @@ const SkillCategory = ({
 };
 
 export default function SkillsSection() {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const highlightColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "#F2F230"
       : "#3185FC"
     : "#374151";
@@ -325,7 +325,7 @@ export default function SkillsSection() {
               key={skill.label}
               skill={skill}
               index={index}
-              theme={theme}
+              theme={resolvedTheme}
               mounted={mounted}
               typographyStyles={typographyStyles}
             />

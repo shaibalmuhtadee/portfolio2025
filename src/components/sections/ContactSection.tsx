@@ -7,20 +7,20 @@ import { useEffect, useState } from "react";
 import GlassBackground from "@/components/GlassBackground";
 
 export default function ContactSection() {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const highlightColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "#F2F230"
       : "#3185FC"
     : "#374151";
 
   const footerColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "text-gray-400"
       : "text-black"
     : "text-gray-400";
@@ -63,7 +63,7 @@ export default function ContactSection() {
                 color: highlightColor,
                 borderColor: highlightColor,
                 background: mounted
-                  ? theme === "dark"
+                  ? resolvedTheme === "dark"
                     ? "rgba(0,0,0,0.2)"
                     : "F2F7F2"
                   : "rgba(0,0,0,0.2)",

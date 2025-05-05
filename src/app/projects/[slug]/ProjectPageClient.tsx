@@ -16,7 +16,7 @@ type ProjectPageClientProps = {
 
 export default function ProjectPageClient({ project }: ProjectPageClientProps) {
   const router = useRouter();
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function ProjectPageClient({ project }: ProjectPageClientProps) {
   }, []);
 
   const highlightColor = mounted
-    ? theme === "dark"
+    ? resolvedTheme === "dark"
       ? "#F2F230"
       : "#3185FC"
     : "#374151";

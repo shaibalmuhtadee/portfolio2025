@@ -9,7 +9,6 @@ import Link from "next/link";
 import { projectsData } from "@/data/projects";
 
 export default function ProjectsSection() {
-  // Remove unused theme variable
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -17,7 +16,6 @@ export default function ProjectsSection() {
     setMounted(true);
   }, []);
 
-  // Using resolvedTheme instead of theme for more reliable theme detection
   const highlightColor = mounted
     ? resolvedTheme === "dark"
       ? "#F2F230"
