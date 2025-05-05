@@ -4,6 +4,13 @@ import { notFound } from "next/navigation";
 import { projectsData } from "@/data/projects";
 import ProjectPageClient from "./ProjectPageClient";
 
+// Add generateStaticParams function to pre-render all project routes at build time
+export async function generateStaticParams() {
+  return projectsData.map((project) => ({
+    slug: project.slug,
+  }));
+}
+
 export default async function ProjectPage({
   params,
 }: {
