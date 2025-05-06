@@ -37,9 +37,22 @@ export const metadata: Metadata = {
     description: "Explore the professional portfolio of Shaibal Muhtadee",
     url: "https://shaibalmuhtadee.com",
     siteName: "Shaibal Muhtadee | Portfolio",
-    images: ["portfolio.png"],
+    images: [
+      {
+        url: "og_image.png",
+        width: 1200,
+        height: 630,
+        alt: "Shaibal Muhtadee - Professional Portfolio",
+      },
+    ],
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shaibal Muhtadee | Portfolio",
+    description: "Explore the professional portfolio of Shaibal Muhtadee",
+    images: ["og_image.png"],
   },
   metadataBase: new URL("https://shaibalmuhtadee.com"),
   alternates: {
